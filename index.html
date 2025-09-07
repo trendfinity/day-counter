@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Days Counter - Trendfinity</title>
+  <title>Days Counter by Trendfinity</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,32 +23,118 @@
       margin-bottom: 10px;
     }
 
+    #days, #user-days {
+      margin-top: 10px;
+    }
+
+    /* Days since 1991 styling */
     #days {
+      font-size: 64px;
+      font-weight: bold;
+      color: #0077cc;
+    }
+
+    #today {
+      font-size: 18px;
+      color: #555;
+      margin-top: 10px;
+    }
+
+    /* User days result styling */
+    #user-days {
+      margin-top: 15px;
+    }
+
+    .user-result-text {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .user-result-number {
       font-size: 48px;
       font-weight: bold;
       color: #0077cc;
+      margin-top: 5px;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005fa3;
     }
   </style>
 </head>
 <body>
-  <h1>Days Since January 13, 1991</h1>
-  <p>From <strong>1991-01-13</strong> to today:</p>
+  <h1>Days Counter by Trendfinity</h1>
+
+  <!-- Days since 1991-01-13 -->
+  <p>Days since <strong>Sunday, January 13, 1991</strong>:</p>
   <div id="days">Calculating...</div>
 
+  <!-- Today's date -->
+  <div id="today">Today's date: </div>
+
+  <hr style="margin: 40px 0;">
+
+  <!-- User input -->
+  <p>Enter any date to calculate days from today:</p>
+  <input type="date" id="user-date">
+  <button onclick="calculateUserDays()">Calculate</button>
+  <div id="user-days"></div>
+
   <script>
-    function calculateDays() {
+    function formatDateWithWeekday(date) {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString(undefined, options);
+    }
+
+    function calculateDaysSince1991() {
       const startDate = new Date('1991-01-13');
       const today = new Date();
-      const diffTime = today - startDate; // difference in milliseconds
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // convert to days
+      const diffTime = today - startDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       document.getElementById('days').textContent = diffDays.toLocaleString();
+
+      document.getElementById('today').textContent = "Today's date: " + formatDateWithWeekday(today);
+    }
+
+    function calculateUserDays() {
+      const inputDate = document.getElementById('user-date').value;
+      if (!inputDate) {
+        alert("Please select a date!");
+        return;
+      }
+
+      const selectedDate = new Date(inputDate);
+      const today = new Date();
+      const diffTime = today - selectedDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      document.getElementById('user-days').innerHTML = `
+        <div class="user-result-text">Days from ${formatDateWithWeekday(selectedDate)} to today:</div>
+        <div class="user-result-number">${diffDays.toLocaleString()}</div>
+      `;
     }
 
     // Initial calculation
-    calculateDays();
+    calculateDaysSince1991();
 
-    // Optional: update daily at midnight
-    setInterval(calculateDays, 1000 * 60 * 60); // updates every hour
+    // Optional: update every hour
+    setInterval(calculateDaysSince1991, 1000 * 60 * 60);
   </script>
 </body>
 </html>
