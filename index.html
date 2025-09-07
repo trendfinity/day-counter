@@ -23,13 +23,12 @@
       margin-bottom: 10px;
     }
 
-    #days, #user-days {
+    #days-container {
       margin-top: 10px;
     }
 
-    /* Days since 1991 styling */
     #days {
-      font-size: 64px;
+      font-size: 48px;
       font-weight: bold;
       color: #0077cc;
     }
@@ -40,21 +39,20 @@
       margin-top: 10px;
     }
 
-    /* User days result styling */
     #user-days {
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
     .user-result-text {
       font-size: 14px;
       color: #555;
+      margin-bottom: 5px;
     }
 
     .user-result-number {
-      font-size: 48px;
+      font-size: 36px;
       font-weight: bold;
       color: #0077cc;
-      margin-top: 5px;
     }
 
     input, button {
@@ -82,8 +80,10 @@
   <h1>Days Counter by Trendfinity</h1>
 
   <!-- Days since 1991-01-13 -->
-  <p>Days since <strong>Sunday, January 13, 1991</strong>:</p>
-  <div id="days">Calculating...</div>
+  <div id="days-container">
+    <p id="days-label">Days since <strong>Sunday, January 13, 1991</strong>:</p>
+    <div id="days">Calculating...</div>
+  </div>
 
   <!-- Today's date -->
   <div id="today">Today's date: </div>
@@ -94,6 +94,7 @@
   <p>Enter any date to calculate days from today:</p>
   <input type="date" id="user-date">
   <button onclick="calculateUserDays()">Calculate</button>
+  <button onclick="resetCounter()">Reset</button>
   <div id="user-days"></div>
 
   <script>
@@ -114,20 +115,36 @@
 
     function calculateUserDays() {
       const inputDate = document.getElementById('user-date').value;
+      const daysContainer = document.getElementById('days-container');
+      const userDaysDiv = document.getElementById('user-days');
+
       if (!inputDate) {
         alert("Please select a date!");
         return;
       }
+
+      // Hide the default 1991 counter and label
+      daysContainer.style.display = 'none';
 
       const selectedDate = new Date(inputDate);
       const today = new Date();
       const diffTime = today - selectedDate;
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-      document.getElementById('user-days').innerHTML = `
+      userDaysDiv.innerHTML = `
         <div class="user-result-text">Days from ${formatDateWithWeekday(selectedDate)} to today:</div>
         <div class="user-result-number">${diffDays.toLocaleString()}</div>
       `;
+    }
+
+    function resetCounter() {
+      // Clear user input
+      document.getElementById('user-date').value = '';
+      // Show default 1991 counter and label
+      document.getElementById('days-container').style.display = 'block';
+      document.getElementById('user-days').innerHTML = '';
+      // Recalculate 1991 days
+      calculateDaysSince1991();
     }
 
     // Initial calculation
