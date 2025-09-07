@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Days Counter - Trendfinity</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fdfdfd;
+      color: #333;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    #days {
+      font-size: 48px;
+      font-weight: bold;
+      color: #0077cc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Days Since January 13, 1991</h1>
+  <p>From <strong>1991-01-13</strong> to today:</p>
+  <div id="days">Calculating...</div>
+
+  <script>
+    function calculateDays() {
+      const startDate = new Date('1991-01-13');
+      const today = new Date();
+      const diffTime = today - startDate; // difference in milliseconds
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // convert to days
+      document.getElementById('days').textContent = diffDays.toLocaleString();
+    }
+
+    // Initial calculation
+    calculateDays();
+
+    // Optional: update daily at midnight
+    setInterval(calculateDays, 1000 * 60 * 60); // updates every hour
+  </script>
+</body>
+</html>
